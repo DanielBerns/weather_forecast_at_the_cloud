@@ -23,8 +23,8 @@ def plot_metrics(history, session):
     plt.legend()
     plt.show()
 
-def next_step():
-    with open("config.yaml", "r") as f:
+def next_step(config_path):
+    with open(config_path, "r") as f:
         config = yaml.safe_load(f)
 
     # --- Load and Prepare Data ---
