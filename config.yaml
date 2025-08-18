@@ -1,0 +1,11 @@
+model_name: LSTM
+epochs_per_session: 10
+sessions: 3
+patience: 3
+data_path: ./data
+models_path: ./saved_models
+gdrive_path: /content/drive/MyDrive/weather_forecast
+out_steps: 24
+input_width: 24
+conv_width: 3
+label_column: temperature_celsius

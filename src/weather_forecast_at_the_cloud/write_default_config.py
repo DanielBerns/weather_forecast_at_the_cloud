@@ -1,4 +1,5 @@
 import yaml
+from pathlib import Path
 
 def generate_default_config() -> str:
     """
@@ -26,10 +27,14 @@ def generate_default_config() -> str:
         'label_column': 'temperature_celsius'
     }
 
-    try:
-        # yaml.dump() serializes the Python dictionary into YAML format.
-        # default_flow_style=False makes it more readable (block style).
-        # sort_keys=False preserves the order from the dictionary.
-        yaml.dump(config_data, default_flow_style=False, sort_keys=False)
-    except Exception as e:
-        print(f"An unexpected error occurred: {e}")
+    # yaml.dump() serializes the Python dictionary into YAML format.
+    # default_flow_style=False makes it more readable (block style).
+    # sort_keys=False preserves the order from the dictionary.
+    return yaml.dump(config_data, default_flow_style=False, sort_keys=False)
+
+
+if __name__ == "__main__":
+    config_yaml = Path("./", "config").with_suffix(".yaml").absolute()
+    with open(config_yaml, "w") as text:
+        content = generate_default_config()
+        text.write(content)
