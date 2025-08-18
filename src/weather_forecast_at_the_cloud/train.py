@@ -4,11 +4,11 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 from . import data_handler
-from utils.window_generator import WindowGenerator
-from models.linear_weather_forecast import LinearWeatherForecast
-from models.dense_weather_forecast import DenseWeatherForecast
-from models.cnn_weather_forecast import CNNWeatherForecast
-from models.rnn_weather_forecast import RNNWeatherForecast
+from .utils.window_generator import WindowGenerator
+from .models.linear_weather_forecast import LinearWeatherForecast
+from .models.dense_weather_forecast import DenseWeatherForecast
+from .models.cnn_weather_forecast import CNNWeatherForecast
+from .models.rnn_weather_forecast import RNNWeatherForecast
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
