@@ -24,6 +24,7 @@ def plot_metrics(history, session):
     plt.show()
 
 def next_step(config_path):
+    logger.info(f"Step 0: Loading config from {config_path}")
     with open(config_path, "r") as f:
         config = yaml.safe_load(f)
 
