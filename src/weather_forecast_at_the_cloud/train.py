@@ -50,7 +50,7 @@ def next_step(config_path):
     train_std = train_df.std()
     train_df = (train_df - train_mean) / train_std
     val_df = (val_df - train_mean) / train_std
-    test_df = (test_df - train_mean) / test_std
+    test_df = (test_df - train_mean) / train_std
 
     # --- Create Data Windows ---
     logger.info("\nStep 4: Creating data windows...")
