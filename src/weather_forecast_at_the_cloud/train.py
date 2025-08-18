@@ -3,7 +3,7 @@ import yaml
 from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
-import data_handler
+import .data_handler
 from utils.window_generator import WindowGenerator
 from models.linear_weather_forecast import LinearWeatherForecast
 from models.dense_weather_forecast import DenseWeatherForecast
@@ -23,7 +23,7 @@ def plot_metrics(history, session):
     plt.legend()
     plt.show()
 
-def main():
+def next_step():
     with open("config.yaml", "r") as f:
         config = yaml.safe_load(f)
 
@@ -102,4 +102,4 @@ def main():
     logger.info(f"Test Loss (MSE): {performance[0]}, MAE: {performance[1]}")
 
 if __name__ == '__main__':
-    main()
+    next_step()
