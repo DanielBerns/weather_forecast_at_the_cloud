@@ -4,7 +4,7 @@ from pathlib import Path
 import tensorflow as tf
 import numpy as np
 
-from utils.window_generator import WindowGenerator
+from weather_forecast_at_the_cloud.utils.window_generator import WindowGenerator
 
 class RNNWeatherForecast:
     """
