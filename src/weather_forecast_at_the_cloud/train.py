@@ -78,10 +78,10 @@ def next_step(config_path):
     if model_class is None:
         raise ValueError(f"Unknown model name: {config['model_name']}")
 
-    model_path = Path(config['models_path'], config['model_name']).with_suffix('.keras')
-    if model_path.exists():
+    this_model_path = Path(config['models_path'], config['model_name']).with_suffix('.keras')
+    if this_model_path.exists():
         logger.info(f"Loading existing model: {config['model_name']}")
-        model = model_class.load(config['models_path'])
+        model = model_class.load(this_model_path)
     else:
         logger.info(f"Creating new model: {config['model_name']}")
         if config['model_name'] == 'CNN':
@@ -97,7 +97,7 @@ def next_step(config_path):
             patience=config['patience'],
             verbose=1
         )
-        model.save(model_path)
+        model.save(str(this_model_path))
         plot_metrics(history, session)
 
     logger.info("\n--- Final Evaluation ---")
