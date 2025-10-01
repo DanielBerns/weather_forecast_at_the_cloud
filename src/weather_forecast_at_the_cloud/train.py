@@ -2,8 +2,7 @@ import logging
 import yaml
 from pathlib import Path
 import matplotlib.pyplot as plt
-import numpy as np
-from . import data_handler
+import pandas as pd
 from .utils.window_generator import WindowGenerator
 from .models.linear_weather_forecast import LinearWeatherForecast
 from .models.dense_weather_forecast import DenseWeatherForecast
@@ -11,9 +10,16 @@ from .models.cnn_weather_forecast import CNNWeatherForecast
 from .models.rnn_weather_forecast import RNNWeatherForecast
 
 logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger()
+logger = aget_logger()
 
 def plot_metrics(history, session):
+    """
+    This function visualizes the training and validation loss across epochs
+    for each training session. Plotting these metrics is crucial for
+    diagnosing the model's learning progress, helping to identify issues
+    like overfitting or underfitting. A well-performing model will show
+    both training and validation losses decreasing and converging.
+    """
     plt.figure(figsize=(12, 8))
     plt.plot(history.history['loss'], label=f'Session {session} Train Loss')
     plt.plot(history.history['val_loss'], label=f'Session {session} Val Loss')
@@ -30,32 +36,16 @@ def next_step(config_path):
 
     if config is None:
         raise ValueError("No config")
-    # --- Load and Prepare Data ---
-    logger.info("Step 1: Loading and cleaning data...")
-    file_list = list(Path(config['data_path']).glob("*.csv"))
-    raw_df = data_handler.load_data(file_list)
-    cleaned_df = data_handler.clean_data(raw_df.copy())
-    station_df = cleaned_df[cleaned_df['station_id'] == 'station_1'].copy()
-    station_df.drop('station_id', axis=1, inplace=True)
-
-    # --- Split the Data ---
-    logger.info("\nStep 2: Splitting data...")
-    n = len(station_df)
-    train_df = station_df[0:int(n * 0.7)]
-    val_df = station_df[int(n * 0.7):int(n * 0.9)]
-    test_df = station_df[int(n * 0.9):]
-    num_features = station_df.shape[1]
-
-    # --- Normalize the Data ---
-    logger.info("\nStep 3: Normalizing features...")
-    train_mean = train_df.mean()
-    train_std = train_df.std()
-    train_df = (train_df - train_mean) / train_std
-    val_df = (val_df - train_mean) / train_std
-    test_df = (test_df - train_mean) / train_std
+    # --- Load Processed Data ---
+    logger.info("Step 1: Loading pre-processed data...")
+    processed_data_path = Path(config['processed_data_path'])
+    train_df = pd.read_csv(processed_data_path / 'train.csv', index_col='timestamp')
+    val_df = pd.read_csv(processed_data_path / 'val.csv', index_col='timestamp')
+    test_df = pd.read_csv(processed_data_path / 'test.csv', index_col='timestamp')
+    num_features = train_df.shape[1]
 
     # --- Create Data Windows ---
-    logger.info("\nStep 4: Creating data windows...")
+    logger.info("\nStep 2: Creating data windows...")
     multi_output_window = WindowGenerator(
         input_width=config['input_width'],
         label_width=config['out_steps'],
@@ -97,7 +87,7 @@ def next_step(config_path):
             patience=config['patience'],
             verbose=1
         )
-        model.save(str(this_model_path))
+        model.save(this_model_path)
         plot_metrics(history, session)
 
     logger.info("\n--- Final Evaluation ---")
@@ -105,4 +95,4 @@ def next_step(config_path):
     logger.info(f"Test Loss (MSE): {performance[0]}, MAE: {performance[1]}")
 
 if __name__ == '__main__':
-    next_step()
+    next_step('config.yaml')
