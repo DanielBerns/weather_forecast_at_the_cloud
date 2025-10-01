@@ -1,6 +1,6 @@
 model_name: LSTM
-epochs_per_session: 10
-sessions: 3
+epochs_per_session: 500
+sessions: 10
 patience: 3
 local_path: ./
 gdrive_path: /content/drive/MyDrive/weather_forecast
