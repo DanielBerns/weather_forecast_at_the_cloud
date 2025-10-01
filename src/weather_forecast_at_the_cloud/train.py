@@ -28,6 +28,8 @@ def next_step(config_path):
     with open(config_path, "r") as f:
         config = yaml.safe_load(f)
 
+    if config is None:
+        raise ValueError("No config")
     # --- Load and Prepare Data ---
     logger.info("Step 1: Loading and cleaning data...")
     file_list = list(Path(config['data_path']).glob("*.csv"))
@@ -76,7 +78,7 @@ def next_step(config_path):
     if model_class is None:
         raise ValueError(f"Unknown model name: {config['model_name']}")
 
-    model_path = Path(config['models_path']) / config['model_name']
+    model_path = Path(config['models_path'], config['model_name']).with_suffix('.keras')
     if model_path.exists():
         logger.info(f"Loading existing model: {config['model_name']}")
         model = model_class.load(config['models_path'])
@@ -95,7 +97,7 @@ def next_step(config_path):
             patience=config['patience'],
             verbose=1
         )
-        model.save(config['models_path'])
+        model.save(model_path)
         plot_metrics(history, session)
 
     logger.info("\n--- Final Evaluation ---")

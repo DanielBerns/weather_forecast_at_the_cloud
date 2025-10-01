@@ -5,7 +5,7 @@ patience: 3
 local_path: ./
 gdrive_path: /content/drive/MyDrive/weather_forecast
 data_path: ./data
-saved_models_path: ./saved_models
+models_path: ./models
 results_path: ./results
 logs_path: ./logs
 out_steps: 24
