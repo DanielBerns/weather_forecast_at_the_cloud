@@ -10,7 +10,7 @@ from .models.cnn_weather_forecast import CNNWeatherForecast
 from .models.rnn_weather_forecast import RNNWeatherForecast
 
 logging.basicConfig(level=logging.INFO)
-logger = aget_logger()
+logger = logging.getLogger()
 
 def plot_metrics(history, session):
     """
