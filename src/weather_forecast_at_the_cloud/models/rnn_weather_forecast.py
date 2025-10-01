@@ -90,22 +90,20 @@ class RNNWeatherForecast:
         """
         return self.model.predict(input_data)
 
-    def save(self, path: str = "saved_models") -> None:
+    def save(self, file_path: Path) -> None:
         """
-        Saves the model to the specified path.
+        Saves the model to the specified file_path.
 
         Args:
-            path: The directory to save the model in.
+            file_path: The file_path to save the model in.
         """
-        model_path = Path(path).absolute() / self.name
-        model_path.mkdir(parents=True, exist_ok=True)
-        self.model.save(model_path.with_suffix(".keras"))
-        print(f"Model '{self.name}' saved to {model_path}")
+        self.model.save(file_path)
+        print(f"Model '{RNNWeatherForecast.name}' saved to {file_path}")
 
     @classmethod
-    def load(cls, path: str = "saved_models") -> "RNNWeatherForecast":
+    def load(cls, file_path: Path) -> "RNNWeatherForecast":
         """
-        Loads a model from the specified path.
+        Loads a model from the specified file path.
 
         Args:
             path: The directory to load the model from.
@@ -113,12 +111,8 @@ class RNNWeatherForecast:
         Returns:
             An instance of RecurrentWeatherForecast with the loaded Keras model.
         """
-        model_name = "LSTM"
-        model_path = Path(path) / model_name
-
         # Assume default values for initialization.
         instance = cls(out_steps=24, num_features=7)
-        loaded_keras_model = tf.keras.models.load_model(model_path)
-        instance.model = loaded_keras_model
-        print(f"Model '{model_name}' loaded from {model_path}")
+        instance.model = tf.keras.models.load_model(file_path)
+        print(f"Model '{cls.name}' loaded from {file_path}")
         return instance
