@@ -3,11 +3,11 @@ import yaml
 from pathlib import Path
 import matplotlib.pyplot as plt
 import pandas as pd
-from utils.window_generator import WindowGenerator
-from models.linear_weather_forecast import LinearWeatherForecast
-from models.dense_weather_forecast import DenseWeatherForecast
-from models.cnn_weather_forecast import CNNWeatherForecast
-from models.rnn_weather_forecast import RNNWeatherForecast
+from .utils.window_generator import WindowGenerator
+from .models.linear_weather_forecast import LinearWeatherForecast
+from .models.dense_weather_forecast import DenseWeatherForecast
+from .models.cnn_weather_forecast import CNNWeatherForecast
+from .models.rnn_weather_forecast import RNNWeatherForecast
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
@@ -93,6 +93,3 @@ def next_step(config_path):
     logger.info("\n--- Final Evaluation ---")
     performance = model.model.evaluate(multi_output_window.test, verbose=0)
     logger.info(f"Test Loss (MSE): {performance[0]}, MAE: {performance[1]}")
-
-if __name__ == '__main__':
-    next_step('config.yaml')

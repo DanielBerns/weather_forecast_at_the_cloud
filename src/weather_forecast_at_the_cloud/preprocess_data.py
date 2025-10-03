@@ -2,7 +2,7 @@ import logging
 import yaml
 from pathlib import Path
 import pandas as pd
-import data_handler
+from .data_handler import load_data, clean_data
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
@@ -54,11 +54,3 @@ def preprocess_data(config_path):
     val_df.to_csv(processed_data_path / 'val.csv')
     test_df.to_csv(processed_data_path / 'test.csv')
     logger.info(f"Processed data saved to {processed_data_path}")
-
-if __name__ == '__main__':
-    # This allows the script to be run directly from the command line.
-    # It's a common practice for operational scripts like this one,
-    # facilitating easy execution for data preprocessing tasks.
-    # A configuration file path is expected as an argument to specify
-    # data locations and other parameters.
-    preprocess_data('config.yaml')

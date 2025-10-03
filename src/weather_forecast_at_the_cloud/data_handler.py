@@ -124,32 +124,3 @@ def preprocess_for_modeling(df: pd.DataFrame, feature_keys: List[str]):
     return df
 
 
-if __name__ == '__main__':
-    # Example usage when running the script directly
-    file_list = ['./data/weather_1.csv']
-
-    # 1. Load the data
-    raw_df = load_data(file_list)
-
-    if not raw_df.empty:
-        print("\n--- Raw Data Head ---")
-        print(raw_df.head())
-
-        # 2. Clean the data
-        cleaned_df = clean_data(raw_df)
-
-        print("\n--- Cleaned Data Head ---")
-        print(cleaned_df.head())
-
-        print("\n--- Cleaned Data Info ---")
-        cleaned_df.info()
-
-        # 3. Preprocess (currently a placeholder)
-        # In a real scenario, you would split your data first
-        # and then apply preprocessing.
-        feature_columns = ['precipitation_mm', 'temperature_celsius', 'humidity_percent',
-                           'pressure_hpa', 'wind_speed_ms', 'wind_x', 'wind_y']
-        processed_df = preprocess_for_modeling(cleaned_df, feature_keys=feature_columns)
-
-        print("\n--- Processed Data Head ---")
-        print(processed_df.head())
