@@ -1,9 +1,9 @@
 from pathlib import Path
-
 import tensorflow as tf
 import numpy as np
 
 from weather_forecast_at_the_cloud.utils.window_generator import WindowGenerator
+from . import utils
 
 class DenseWeatherForecast:
     """
@@ -45,7 +45,7 @@ class DenseWeatherForecast:
         epochs: int = 20,
         patience: int = 2,
         verbose: int = 1
-    ) -> tf.keras.Model:
+    ) -> tf.keras.callbacks.History:
         """
         Compiles and trains the Dense model.
 
@@ -92,37 +92,15 @@ class DenseWeatherForecast:
         """
         return self.model.predict(input_data)
 
-    def save(self, path: str = "saved_models") -> None:
-        """
-        Saves the model to the specified path.
-
-        Args:
-            path: The directory to save the model in.
-        """
-        model_path = Path(path).absolute() / self.name
-        model_path.mkdir(parents=True, exist_ok=True)
-        self.model.save(model_path.with_suffix(".keras"))
-        print(f"Model '{self.name}' saved to {model_path}")
+    def save(self, base_path: Path) -> None:
+        """Saves the model and its configuration."""
+        config = {
+            'out_steps': self.out_steps,
+            'num_features': self.num_features
+        }
+        utils.save_model(self, base_path, config)
 
     @classmethod
-    def load(cls, path: str = "saved_models") -> "DenseWeatherForecast":
-        """
-        Loads a model from the specified path.
-
-        Args:
-            path: The directory to load the model from.
-
-        Returns:
-            An instance of DenseWeatherForecast with the loaded Keras model.
-        """
-        model_name = "Dense"
-        model_path = Path(path) / model_name
-
-        # As before, we assume default values for initialization
-        # since they are not saved with the Keras model.
-        # A real application would use a config file.
-        instance = cls(out_steps=24, num_features=7)
-        loaded_keras_model = tf.keras.models.load_model(model_path)
-        instance.model = loaded_keras_model
-        print(f"Model '{model_name}' loaded from {model_path}")
-        return instance
+    def load(cls, base_path: Path) -> "DenseWeatherForecast":
+        """Loads a model using its configuration file."""
+        return utils.load_model(cls, base_path)

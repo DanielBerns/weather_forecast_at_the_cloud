@@ -4,7 +4,10 @@ from pathlib import Path
 def generate_default_config() -> str:
     """
     Generates a default config.yaml string for the weather forecasting project.
-
+    This centralized configuration allows for easy adjustments of hyperparameters,
+    file paths, and model choices without altering the core logic of the
+    application. Using a configuration file is a best practice for creating
+    flexible and maintainable machine learning pipelines.
     """
     # --- Define the configuration structure as a Python dictionary ---
     # This dictionary holds all the reconfigurable parameters for the training pipeline.
@@ -17,7 +20,8 @@ def generate_default_config() -> str:
 
         # Path configurations
         'data_path': './data',
-        'models_path': './saved_models',
+        'processed_data_path': './processed_data',
+        'models_path': './models',
         'gdrive_path': '/content/drive/MyDrive/weather_forecast', # For Google Colab
 
         # Parameters for the data windowing and model architecture

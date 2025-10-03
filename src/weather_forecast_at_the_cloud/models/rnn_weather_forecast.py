@@ -1,10 +1,9 @@
 from pathlib import Path
-# from typing import Type
-
 import tensorflow as tf
 import numpy as np
 
 from weather_forecast_at_the_cloud.utils.window_generator import WindowGenerator
+from . import utils
 
 class RNNWeatherForecast:
     """
@@ -43,7 +42,7 @@ class RNNWeatherForecast:
         epochs: int = 20,
         patience: int = 2,
         verbose: int = 1
-    ) -> tf.keras.Model:
+    ) -> tf.keras.callbacks.History:
         """
         Compiles and trains the LSTM model.
 
@@ -90,29 +89,15 @@ class RNNWeatherForecast:
         """
         return self.model.predict(input_data)
 
-    def save(self, file_path: Path) -> None:
-        """
-        Saves the model to the specified file_path.
-
-        Args:
-            file_path: The file_path to save the model in.
-        """
-        self.model.save(file_path)
-        print(f"Model '{RNNWeatherForecast.name}' saved to {file_path}")
+    def save(self, base_path: Path) -> None:
+        """Saves the model and its configuration."""
+        config = {
+            'out_steps': self.out_steps,
+            'num_features': self.num_features
+        }
+        utils.save_model(self, base_path, config)
 
     @classmethod
-    def load(cls, file_path: Path) -> "RNNWeatherForecast":
-        """
-        Loads a model from the specified file path.
-
-        Args:
-            path: The directory to load the model from.
-
-        Returns:
-            An instance of RecurrentWeatherForecast with the loaded Keras model.
-        """
-        # Assume default values for initialization.
-        instance = cls(out_steps=24, num_features=7)
-        instance.model = tf.keras.models.load_model(file_path)
-        print(f"Model '{cls.name}' loaded from {file_path}")
-        return instance
+    def load(cls, base_path: Path) -> "RNNWeatherForecast":
+        """Loads a model using its configuration file."""
+        return utils.load_model(cls, base_path)
