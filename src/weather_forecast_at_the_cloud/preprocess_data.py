@@ -2,7 +2,7 @@ import logging
 import yaml
 from pathlib import Path
 import pandas as pd
-from . import data_handler
+import data_handler
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
