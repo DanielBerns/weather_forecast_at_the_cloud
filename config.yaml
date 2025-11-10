@@ -6,9 +6,9 @@ out_steps: 24
 input_width: 24
 conv_width: 3
 label_column: temperature_celsius
-cloud_path: /content/drive/MyDrive
 raw_data_path: ./raw_data
 processed_data_path: ./processed_data
 models_path: ./models
 results_path: ./results
 logs_path: ./logs
+gdrive_path: /content/drive/MyDrive
