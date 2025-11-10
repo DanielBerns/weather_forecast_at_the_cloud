@@ -27,8 +27,8 @@ def preprocess_data(config_path):
     # --- Load and Prepare Data ---
     logger.info("Step 1: Loading and cleaning data...")
     file_list = list(Path(config['data_path']).glob("*.csv"))
-    raw_df = data_handler.load_data(file_list)
-    cleaned_df = data_handler.clean_data(raw_df.copy())
+    raw_df = load_data(file_list)
+    cleaned_df = clean_data(raw_df.copy())
     station_df = cleaned_df[cleaned_df['station_id'] == 'station_1'].copy()
     station_df.drop('station_id', axis=1, inplace=True)
 

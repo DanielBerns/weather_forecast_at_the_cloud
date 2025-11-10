@@ -16,7 +16,8 @@ dependencies = [
 ]
 
 [project.scripts]
-weather-forecast-at-the-cloud = "weather_forecast_at_the_cloud:main"
+weather-forecast-train = "weather_forecast_at_the_cloud.train:next_step"
+weather-forecast-preprocess = "weather_forecast_at_the_cloud.preprocess_data:preprocess_data"
 
 [build-system]
 requires = ["hatchling"]
